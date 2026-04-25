@@ -1,7 +1,10 @@
-package dam_A51706.coolweatherapptp3
+package dam_A51706.coolweatherapptp3.data
 
 import android.content.Context
+import dam_A51706.coolweatherapptp3.R
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WeatherData (
     var latitude : String ,
     var longitude : String ,
@@ -9,6 +12,8 @@ data class WeatherData (
     var current_weather : CurrentWeather ,
     var hourly : Hourly
 )
+
+@Serializable
 data class CurrentWeather (
     var temperature : Float ,
     var windspeed : Float ,
@@ -17,6 +22,7 @@ data class CurrentWeather (
     var time : String
 )
 
+@Serializable
 data class Hourly (
     var time : ArrayList < String > ,
     var temperature_2m : ArrayList <Float > ,

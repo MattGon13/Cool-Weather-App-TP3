@@ -20,9 +20,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dam_A51706.coolweatherapptp3.data.WeatherData
+import dam_A51706.coolweatherapptp3.data.getWeatherInfoCodeMap
 import dam_A51706.coolweatherapptp3.databinding.ActivityMainBinding
-import kotlin.collections.get
-import kotlin.text.get
 
 
 class MainActivity : AppCompatActivity() {
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         return latlogValues
     }
 
-    private fun updateUI ( request : WeatherData ) {
+    private fun updateUI ( request : WeatherData) {
         runOnUiThread {
             val weatherImage:ImageView = binding.weatherImage
             val pressure:TextView = binding.seaLevelValue

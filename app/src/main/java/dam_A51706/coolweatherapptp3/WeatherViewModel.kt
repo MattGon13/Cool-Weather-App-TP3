@@ -4,6 +4,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import dam_A51706.coolweatherapptp3.data.WeatherData
 import java.io.InputStreamReader
 import java.net.URL
 
@@ -22,7 +23,7 @@ class WeatherViewModel(application: Application): AndroidViewModel(application) 
         }
         val url = URL( reqString);
         url.openStream().use {
-            val request = Gson().fromJson(InputStreamReader (it ,"UTF-8") ,WeatherData::class.java )
+            val request = Gson().fromJson(InputStreamReader (it ,"UTF-8") , WeatherData::class.java )
             return request
         }
     }
