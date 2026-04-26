@@ -30,7 +30,7 @@ data class Hourly (
     var pressure_msl : ArrayList < Double >
 )
 
-/*enum class WMO_WeatherCode ( var code : Int , var image : String ) {
+enum class WMO_WeatherCode ( var code : Int , var image : String ) {
     CLEAR_SKY (0 ,"clear_") ,
     MAINLY_CLEAR (1 , "mostly_clear_") ,
     PARTLY_CLOUDY (2 ,"partly_cloudy_") ,
@@ -67,7 +67,7 @@ fun getWeatherCodeMap () : Map <Int , WMO_WeatherCode > {
         weatherMap.put(it.code ,it)
     }
     return weatherMap
-}*/
+}
 
 data class WMO_WeatherInfo (var description: String, var image: String)
 

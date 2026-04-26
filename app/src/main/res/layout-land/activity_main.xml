@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="dam_A51706.coolweatherapptp3.WeatherViewModel" />
+            type="dam_A51706.coolweatherapptp3.viewmodel.WeatherViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
