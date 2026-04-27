@@ -114,13 +114,14 @@ fun CoordinatesCard (
     long: Float,
     onLatChange: (String) -> Unit,
     onLogChange: (String) -> Unit,
+    cardModifier: Modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(12.dp),
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(12.dp),
+        modifier = cardModifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
     ) {
         Column(

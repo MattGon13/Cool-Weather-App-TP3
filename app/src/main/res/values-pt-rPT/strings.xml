@@ -16,4 +16,7 @@
     <string name="enter_latitude">Latitude</string>
     <string name="enter_longitude">Longitude</string>
     <string name="coordinates">Coordenadas</string>
+    <string name="search_location">Procurar localização</string>
+    <string name="weather_info">Informações</string>
+    <string name="weather_image">Imagem do tempo</string>
 </resources>
