@@ -8,5 +8,5 @@ data class WeatherUIState(
     val windDirection: Int = 0,
     val weatherCode: Int = 0,
     val seaLevelPressure: Float = 0f,
-    val time: String = ""
+    val time: String = "",
 )

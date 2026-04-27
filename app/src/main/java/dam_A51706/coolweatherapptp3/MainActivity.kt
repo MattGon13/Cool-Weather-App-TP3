@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dam_A51706.coolweatherapptp3.ui.WeatherUI
+import dam_A51706.coolweatherapptp3.ui.theme.WeatherAppTheme
 import dam_A51706.coolweatherapptp3.viewmodel.WeatherViewModel
 import kotlin.getValue
 
@@ -15,7 +16,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WeatherUI(weatherViewModel = viewModel)
+            WeatherAppTheme{
+                WeatherUI(weatherViewModel = viewModel)
+            }
         }
     }
 }

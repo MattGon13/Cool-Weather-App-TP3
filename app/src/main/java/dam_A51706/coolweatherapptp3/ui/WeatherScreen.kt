@@ -53,7 +53,8 @@ fun WeatherUI (weatherViewModel: WeatherViewModel = viewModel() ) {
     val time = weatherUIState.time
 
     val configuration = LocalConfiguration.current
-    val day = true // Must change this in the future
+    val hour = time.substringAfter("T").substringBefore(":").toIntOrNull() ?: 12
+    val day = hour in 6..19
     val mapt = getWeatherCodeMap()
     val wCode = mapt.get(weatherCode)
     val wImage = when(wCode) {
@@ -86,7 +87,7 @@ fun WeatherUI (weatherViewModel: WeatherViewModel = viewModel() ) {
             } ,
             onUpdateButtonClick = {
                 weatherViewModel.fetchWeather()
-            }
+            },
         )
     } else {
         PortraitWeatherUI (
@@ -111,10 +112,11 @@ fun WeatherUI (weatherViewModel: WeatherViewModel = viewModel() ) {
             },
             onUpdateButtonClick = {
                 weatherViewModel.fetchWeather()
-            }
+            },
         )
     }
 }
+
 
 @Composable
 fun WeatherUIPreview () {
@@ -129,7 +131,7 @@ fun WeatherUIPreview () {
     val time = stringResource(R.string.time)
 
     val configuration = LocalConfiguration.current
-    val day = true // Must change this in the future
+    val day = false // Must change this in the future
     val mapt = getWeatherCodeMap()
     val wCode = mapt.get(weatherCode)
     val wImage = when(wCode) {
@@ -175,7 +177,8 @@ fun WeatherUIPreview () {
             onLongitudeChange = {
             },
             onUpdateButtonClick = {
-            }
+            },
+
         )
     }
 }
@@ -198,11 +201,11 @@ fun PortraitWeatherUI (
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 12.dp, vertical = 20.dp)
+                .padding(horizontal = 12.dp, vertical = 10.dp)
         ) {
             Image(
                 painter = painterResource(id = wIcon), contentDescription = stringResource(R.string.weather_image),
@@ -211,7 +214,7 @@ fun PortraitWeatherUI (
             CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange)
             WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time)
             Button(
-                onClick = {},
+                onClick = onUpdateButtonClick,
                 modifier = Modifier.width(300.dp).height(50.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
@@ -266,7 +269,7 @@ fun LandscapeWeatherUI (
                         modifier = Modifier.size(125.dp)
                     )
                     Button(
-                        onClick = {},
+                        onClick = onUpdateButtonClick,
                         modifier = Modifier.width(200.dp).height(50.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.secondary,
@@ -286,24 +289,24 @@ fun LandscapeWeatherUI (
             }
         }
     }
-// ToDo
 }
 
-/*
+
 @Preview(showBackground = true, device = "spec:width=411dp,height=891dp,orientation=portrait")
 @Composable
 fun AppScreenPreview() {
     WeatherAppTheme {
         WeatherUIPreview()
     }
-}*/
+}
 
 //Landscape
-@Preview(showBackground = true, device = "spec:width=411dp,height=891dp,orientation=landscape")
+/*
+@Preview(showBackground = true, device = "spec:width=411dp,height=891dp,orientation=landscape", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun AppScreenPreview() {
     WeatherAppTheme {
-        WeatherUIPreview()
+        //WeatherUIPreview()
     }
 }
-
+*/

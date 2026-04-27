@@ -36,7 +36,6 @@ fun WeatherCard (
     cardmodifier: Modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
-        .padding(12.dp),
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
@@ -44,7 +43,7 @@ fun WeatherCard (
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(20.dp)
         ) {
