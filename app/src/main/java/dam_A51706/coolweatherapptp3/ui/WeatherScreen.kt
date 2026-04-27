@@ -6,9 +6,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalConfiguration
 import android.content.res.Configuration
 import androidx.compose.runtime.*
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dam_A51706.coolweatherapptp3.data.WMO_WeatherCode
 import dam_A51706.coolweatherapptp3.data.getWeatherCodeMap
+import dam_A51706.coolweatherapptp3.ui.theme.WeatherAppTheme
 
 @Composable
 fun WeatherUI (weatherViewModel: WeatherViewModel = viewModel() ) {
@@ -87,6 +89,7 @@ fun WeatherUI (weatherViewModel: WeatherViewModel = viewModel() ) {
     }
 }
 
+
 @Composable
 fun PortraitWeatherUI (
     wIcon : Int,
@@ -122,3 +125,12 @@ fun LandscapeWeatherUI (
 ) {
 // ToDo
 }
+
+@Preview(showBackground = true)
+@Composable
+fun AppScreenPreview() {
+    WeatherAppTheme {
+        WeatherUI()
+    }
+}
+

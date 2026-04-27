@@ -13,4 +13,7 @@
     <string name="description_input_longitude">"Enter longitude for weather "</string>
     <string name="description_input_latitude">"Enter latitude for weather "</string>
     <string name="please_turn_location_on">Please turn location on.</string>
+    <string name="enter_latitude">Latitude</string>
+    <string name="enter_longitude">Longitude</string>
+    <string name="coordinates">Coordinates</string>
 </resources>

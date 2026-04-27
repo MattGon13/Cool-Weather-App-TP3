@@ -13,4 +13,7 @@
     <string name="description_input_longitude">Insira a longitude para o clima</string>
     <string name="description_input_latitude">Insira a latitude para o clima</string>
     <string name="please_turn_location_on">Ative a localização, por favor.</string>
+    <string name="enter_latitude">Latitude</string>
+    <string name="enter_longitude">Longitude</string>
+    <string name="coordinates">Coordenadas</string>
 </resources>
