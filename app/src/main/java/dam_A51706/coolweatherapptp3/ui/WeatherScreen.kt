@@ -201,7 +201,7 @@ fun PortraitWeatherUI (
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(15.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
@@ -253,7 +253,7 @@ fun LandscapeWeatherUI (
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 20.dp)
+                .padding(horizontal = 5.dp, vertical = 10.dp)
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -262,7 +262,7 @@ fun LandscapeWeatherUI (
                 Column(
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.weight(1F)
+                    modifier = Modifier.weight(0.5F)
                 ) {
                     Image(
                         painter = painterResource(id = wIcon), contentDescription = stringResource(R.string.weather_image),
@@ -284,7 +284,7 @@ fun LandscapeWeatherUI (
                         )
                     }
                 }
-                CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(1F).wrapContentHeight().padding(12.dp))
+                CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.6F).wrapContentHeight().padding(12.dp))
                 WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time, Modifier.weight(1F).wrapContentHeight().padding(12.dp))
             }
         }
@@ -301,12 +301,11 @@ fun AppScreenPreview() {
 }
 
 //Landscape
-/*
+
 @Preview(showBackground = true, device = "spec:width=411dp,height=891dp,orientation=landscape", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-fun AppScreenPreview() {
+fun AppScreenPreviewLandscape() {
     WeatherAppTheme {
-        //WeatherUIPreview()
+        WeatherUIPreview()
     }
 }
-*/
