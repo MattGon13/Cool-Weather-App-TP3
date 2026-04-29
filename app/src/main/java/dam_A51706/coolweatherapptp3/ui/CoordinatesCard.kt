@@ -41,10 +41,16 @@ fun CoordinatesCard (
     onLogChange: (String) -> Unit,
     cardModifier: Modifier = Modifier
         .fillMaxWidth()
-        .wrapContentHeight()
+        .wrapContentHeight(),
 ) {
     var latInput by remember{ mutableStateOf(lat.toString()) }
     var longInput by remember{ mutableStateOf(long.toString()) }
+    var appInit by remember { mutableStateOf(true) }
+
+    if((lat.toString() != latInput || long.toString() != longInput) && appInit){
+        latInput = lat.toString()
+        longInput = long.toString()
+    }
 
     Card(
         colors = CardDefaults.cardColors(containerColor = colorScheme.primary),
