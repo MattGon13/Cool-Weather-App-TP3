@@ -88,6 +88,7 @@ fun WeatherUI (weatherViewModel: WeatherViewModel = viewModel() ) {
             onUpdateButtonClick = {
                 weatherViewModel.fetchWeather()
             },
+            weatherViewModel
         )
     } else {
         PortraitWeatherUI (
@@ -113,6 +114,7 @@ fun WeatherUI (weatherViewModel: WeatherViewModel = viewModel() ) {
             onUpdateButtonClick = {
                 weatherViewModel.fetchWeather()
             },
+            weatherViewModel
         )
     }
 }
@@ -144,7 +146,7 @@ fun WeatherUIPreview () {
     val context = LocalContext.current
     val wIcon = context.resources.getIdentifier(wImage, "drawable", context.packageName )
     if ( configuration.orientation == Configuration.ORIENTATION_LANDSCAPE ) {
-        LandscapeWeatherUI (
+        LandscapeWeatherUIPreview(
             wIcon,
             latitude,
             longitude,
@@ -159,10 +161,10 @@ fun WeatherUIPreview () {
             onLongitudeChange = {
             } ,
             onUpdateButtonClick = {
-            }
+            },
         )
     } else {
-        PortraitWeatherUI (
+        PortraitWeatherUIPreview (
             wIcon,
             latitude,
             longitude,
@@ -198,6 +200,7 @@ fun PortraitWeatherUI (
     onLatitudeChange : (String) -> Unit,
     onLongitudeChange : (String) -> Unit,
     onUpdateButtonClick : () -> Unit,
+    viewModel: WeatherViewModel
 ) {
     Surface(color = MaterialTheme.colorScheme.surface) {
         Column(
@@ -211,7 +214,7 @@ fun PortraitWeatherUI (
                 painter = painterResource(id = wIcon), contentDescription = stringResource(R.string.weather_image),
                 modifier = Modifier.size(125.dp)
             )
-            CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange)
+            CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, viewModel = viewModel)
             WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time)
             Button(
                 onClick = onUpdateButtonClick,
@@ -234,6 +237,114 @@ fun PortraitWeatherUI (
 
 @Composable
 fun LandscapeWeatherUI (
+    wIcon : Int,
+    latitude : Float,
+    longitude : Float,
+    temperature : Float,
+    windSpeed : Float,
+    windDirection : Int,
+    weatherCode : Int,
+    seaLevelPressure : Float,
+    time : String,
+    onLatitudeChange : (String) -> Unit,
+    onLongitudeChange : (String) -> Unit,
+    onUpdateButtonClick : () -> Unit,
+    viewModel: WeatherViewModel,
+) {
+    Surface(color = MaterialTheme.colorScheme.surface) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 5.dp, vertical = 10.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(0.5F)
+                ) {
+                    Image(
+                        painter = painterResource(id = wIcon), contentDescription = stringResource(R.string.weather_image),
+                        modifier = Modifier.size(125.dp)
+                    )
+                    Button(
+                        onClick = onUpdateButtonClick,
+                        modifier = Modifier.width(200.dp).height(50.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSecondary
+                        ),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.update),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
+                    }
+                }
+                CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.6F).wrapContentHeight().padding(12.dp), viewModel)
+                WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time, Modifier.weight(1F).wrapContentHeight().padding(12.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun PortraitWeatherUIPreview (
+    wIcon : Int,
+    latitude : Float,
+    longitude : Float,
+    temperature : Float,
+    windSpeed : Float,
+    windDirection : Int,
+    weatherCode : Int,
+    seaLevelPressure : Float,
+    time : String,
+    onLatitudeChange : (String) -> Unit,
+    onLongitudeChange : (String) -> Unit,
+    onUpdateButtonClick : () -> Unit,
+) {
+    Surface(color = MaterialTheme.colorScheme.surface) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 10.dp)
+        ) {
+            Image(
+                painter = painterResource(id = wIcon), contentDescription = stringResource(R.string.weather_image),
+                modifier = Modifier.size(125.dp)
+            )
+            CoordinatesCardPreview(latitude, longitude, onLatitudeChange, onLongitudeChange)
+            WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time)
+            Button(
+                onClick = onUpdateButtonClick,
+                modifier = Modifier.width(300.dp).height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.update),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LandscapeWeatherUIPreview (
     wIcon : Int,
     latitude : Float,
     longitude : Float,
@@ -284,7 +395,7 @@ fun LandscapeWeatherUI (
                         )
                     }
                 }
-                CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.6F).wrapContentHeight().padding(12.dp))
+                CoordinatesCardPreview(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.6F).wrapContentHeight().padding(12.dp))
                 WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time, Modifier.weight(1F).wrapContentHeight().padding(12.dp))
             }
         }
