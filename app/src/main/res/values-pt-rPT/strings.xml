@@ -19,4 +19,6 @@
     <string name="search_location">Procurar localização</string>
     <string name="weather_info">Informações</string>
     <string name="weather_image">Imagem do tempo</string>
+    <string name="location_name">Nome da localização</string>
+    <string name="add">Adicionar</string>
 </resources>

@@ -23,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,10 +32,14 @@ import dam_A51706.coolweatherapptp3.ui.theme.WeatherAppTheme
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import dam_A51706.coolweatherapptp3.LocationPickerActivity
+import dam_A51706.coolweatherapptp3.data.Favourite
 import dam_A51706.coolweatherapptp3.viewmodel.WeatherViewModel
 
 @Composable
@@ -52,7 +55,8 @@ fun CoordinatesCard (
 ) {
     var latInput by remember{ mutableStateOf(lat.toString()) }
     var longInput by remember{ mutableStateOf(long.toString()) }
-    var appInit by remember { mutableStateOf(true) }
+    var inputChange by remember { mutableStateOf(true) }
+    var addFavourite by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -73,16 +77,14 @@ fun CoordinatesCard (
             }
         }
     }
-    println("Raio do input: $latInput")
 
     LaunchedEffect(lat, long) {
-        if((lat.toString() != latInput || long.toString() != longInput) && appInit){
-            appInit = false
+        if((lat.toString() != latInput || long.toString() != longInput) && inputChange){
+            inputChange = false
             latInput = lat.toString()
             longInput = long.toString()
         }
     }
-
 
     Card(
         colors = CardDefaults.cardColors(containerColor = colorScheme.primary),
@@ -107,53 +109,96 @@ fun CoordinatesCard (
                     color = colorScheme.onPrimary,
                     fontWeight = FontWeight.Bold,
                 )
-                IconButton(onClick = {
-                    val intent = Intent(context, LocationPickerActivity::class.java)
-                    launcher.launch(intent)
-                },
-                    modifier = Modifier.height(30.dp)
-                ) {
-                    Icon(Icons.Default.Public, contentDescription = "Search location")
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .wrapContentHeight()
+                ){
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        IconButton(onClick = {
+                            val intent = Intent(context, LocationPickerActivity::class.java)
+                            launcher.launch(intent)
+                        },
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            Icon(Icons.Default.Public, contentDescription = "Search location")
+                        }
+                        IconButton(onClick = {
+                            addFavourite = !addFavourite
+                        },
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            if(!addFavourite){
+                                Icon(Icons.Default.FavoriteBorder, contentDescription = "Favourites")
+                            }
+                            else{
+                                Icon(Icons.Default.Favorite, contentDescription = "Favourites")
+                            }
+                        }
+                    }
                 }
             }
-            OutlinedTextField(
-                value = latInput,
-                singleLine = true,
-                shape = shapes.large,
-                onValueChange = {
-                    latInput = it
-                    onLatChange(it)
-                },
-                label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_latitude)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorScheme.secondary,
-                    focusedLabelColor = colorScheme.secondary,
-                    unfocusedBorderColor = colorScheme.onSecondary,
-                    unfocusedLabelColor = colorScheme.onSecondary,
-                    unfocusedTextColor = colorScheme.onPrimary,
-                    cursorColor = colorScheme.onPrimary,
-                ),
-            )
-            OutlinedTextField(
-                value = longInput,
-                singleLine = true,
-                shape = shapes.large,
-                onValueChange = {
-                    longInput = it
-                    onLogChange(it)
-                },
-                label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_longitude)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorScheme.secondary,
-                    focusedLabelColor = colorScheme.secondary,
-                    unfocusedBorderColor = colorScheme.onSecondary,
-                    unfocusedLabelColor = colorScheme.onSecondary,
-                    unfocusedTextColor = colorScheme.onPrimary,
-                    cursorColor = colorScheme.onPrimary,
-                ),
-            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ){
+                OutlinedTextField(
+                    value = latInput,
+                    singleLine = true,
+                    shape = shapes.large,
+                    onValueChange = {
+                        latInput = it
+                        onLatChange(it)
+                    },
+                    label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_latitude)) },
+                    modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = colorScheme.secondary,
+                        focusedLabelColor = colorScheme.secondary,
+                        unfocusedBorderColor = colorScheme.onSecondary,
+                        unfocusedLabelColor = colorScheme.onSecondary,
+                        unfocusedTextColor = colorScheme.onPrimary,
+                        cursorColor = colorScheme.onPrimary,
+                    ),
+                )
+                OutlinedTextField(
+                    value = longInput,
+                    singleLine = true,
+                    shape = shapes.large,
+                    onValueChange = {
+                        longInput = it
+                        onLogChange(it)
+                    },
+                    label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_longitude)) },
+                    modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = colorScheme.secondary,
+                        focusedLabelColor = colorScheme.secondary,
+                        unfocusedBorderColor = colorScheme.onSecondary,
+                        unfocusedLabelColor = colorScheme.onSecondary,
+                        unfocusedTextColor = colorScheme.onPrimary,
+                        cursorColor = colorScheme.onPrimary,
+                    ),
+                )
+            }
+            if(!addFavourite){
+                FavouritesList(
+                    favourites = viewModel.favourites,
+                    onSelect =  {
+                        viewModel.selectFavourite(it)
+                        inputChange = true
+                    }
+                )
+            }
+            else{
+                FavouritesSave(latInput.toFloat(), longInput.toFloat(), viewModel)
+            }
         }
     }
 }
@@ -170,6 +215,7 @@ fun CoordinatesCardPreview (
     var latInput by remember{ mutableStateOf(lat.toString()) }
     var longInput by remember{ mutableStateOf(long.toString()) }
     var appInit by remember { mutableStateOf(true) }
+    var addFavourite by remember { mutableStateOf(false) }
 
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
         result ->
@@ -211,52 +257,99 @@ fun CoordinatesCardPreview (
                     color = colorScheme.onPrimary,
                     fontWeight = FontWeight.Bold,
                 )
-                IconButton(onClick = {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .wrapContentHeight()
+                ){
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        IconButton(onClick = {
 
-                },
-                    modifier = Modifier.height(30.dp)
-                ) {
-                    Icon(Icons.Default.Public, contentDescription = "Search location")
+                        },
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            Icon(Icons.Default.Public, contentDescription = "Search location")
+                        }
+                        IconButton(onClick = {
+                            addFavourite = !addFavourite
+                        },
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            if(!addFavourite){
+                                Icon(Icons.Default.FavoriteBorder, contentDescription = "Favourites")
+                            }
+                            else{
+                                Icon(Icons.Default.Favorite, contentDescription = "Favourites")
+                            }
+
+                        }
+                    }
                 }
             }
-            OutlinedTextField(
-                value = latInput,
-                singleLine = true,
-                shape = shapes.large,
-                onValueChange = {
-                    latInput = it
-                    onLatChange(it)
-                },
-                label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_latitude)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorScheme.secondary,
-                    focusedLabelColor = colorScheme.secondary,
-                    unfocusedBorderColor = colorScheme.onSecondary,
-                    unfocusedLabelColor = colorScheme.onSecondary,
-                    unfocusedTextColor = colorScheme.onPrimary,
-                    cursorColor = colorScheme.onPrimary,
-                ),
-            )
-            OutlinedTextField(
-                value = longInput,
-                singleLine = true,
-                shape = shapes.large,
-                onValueChange = {
-                    longInput = it
-                    onLogChange(it)
-                },
-                label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_longitude)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorScheme.secondary,
-                    focusedLabelColor = colorScheme.secondary,
-                    unfocusedBorderColor = colorScheme.onSecondary,
-                    unfocusedLabelColor = colorScheme.onSecondary,
-                    unfocusedTextColor = colorScheme.onPrimary,
-                    cursorColor = colorScheme.onPrimary,
-                ),
-            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ){
+                OutlinedTextField(
+                    value = latInput,
+                    singleLine = true,
+                    shape = shapes.large,
+                    onValueChange = {
+                        latInput = it
+                        onLatChange(it)
+                    },
+                    label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_latitude)) },
+                    modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = colorScheme.secondary,
+                        focusedLabelColor = colorScheme.secondary,
+                        unfocusedBorderColor = colorScheme.onSecondary,
+                        unfocusedLabelColor = colorScheme.onSecondary,
+                        unfocusedTextColor = colorScheme.onPrimary,
+                        cursorColor = colorScheme.onPrimary,
+                    ),
+                )
+                OutlinedTextField(
+                    value = longInput,
+                    singleLine = true,
+                    shape = shapes.large,
+                    onValueChange = {
+                        longInput = it
+                        onLogChange(it)
+                    },
+                    label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_longitude)) },
+                    modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = colorScheme.secondary,
+                        focusedLabelColor = colorScheme.secondary,
+                        unfocusedBorderColor = colorScheme.onSecondary,
+                        unfocusedLabelColor = colorScheme.onSecondary,
+                        unfocusedTextColor = colorScheme.onPrimary,
+                        cursorColor = colorScheme.onPrimary,
+                    ),
+                )
+            }
+            if(!addFavourite){
+                FavouritesList(
+                    favourites = listOf(
+                        Favourite("Lisboa", 30f, 60f),
+                        Favourite("Porto", 30f, 60f),
+                        Favourite("Braga", 30f, 60f),
+                        Favourite("Coimbra", 30f, 60f),
+                    ),
+                    onSelect =  {}
+                )
+            }
+            else{
+                FavouritesSavePreview(latInput.toFloat(), longInput.toFloat())
+            }
+
         }
     }
 }

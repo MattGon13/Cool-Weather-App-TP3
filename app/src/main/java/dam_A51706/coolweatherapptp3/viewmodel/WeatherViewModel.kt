@@ -3,6 +3,7 @@ package dam_A51706.coolweatherapptp3.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import dam_A51706.coolweatherapptp3.data.Favourite
 import dam_A51706.coolweatherapptp3.data.WeatherApiClient
 import dam_A51706.coolweatherapptp3.ui.WeatherUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,9 @@ import kotlin.Float
 class WeatherViewModel(application: Application): AndroidViewModel(application) {
     private val _weatherUIState= MutableStateFlow(WeatherUIState())
     val weatherUIState: StateFlow<WeatherUIState> = _weatherUIState.asStateFlow()
+
+    private val _favourites = mutableListOf<Favourite>()
+    val favourites: List<Favourite> = _favourites
 
     fun updateLatitude ( newLatitude: Float ){
         if( newLatitude in -90f..90f ){
@@ -52,5 +56,15 @@ class WeatherViewModel(application: Application): AndroidViewModel(application) 
                 }
             }
         }
+    }
+
+    fun addFavourite(favourite: Favourite){
+        _favourites.add(favourite)
+    }
+
+    fun selectFavourite(favourite: Favourite){
+        updateLatitude(favourite.latitude)
+        updateLongitude(favourite.longitude)
+        fetchWeather()
     }
 }

@@ -23,4 +23,6 @@
     <string name="search_location">Search location</string>
     <string name="weather_info">Weather info</string>
     <string name="weather_image">weather image</string>
+    <string name="location_name">Location name</string>
+    <string name="add">Add</string>
 </resources>
