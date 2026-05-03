@@ -1,5 +1,6 @@
 package dam_A51706.coolweatherapptp3.ui
 
+import android.R
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -52,6 +53,7 @@ fun CoordinatesCard (
         .fillMaxWidth()
         .wrapContentHeight(),
     viewModel: WeatherViewModel,
+    landscape: Boolean,
 ) {
     var latInput by remember{ mutableStateOf(lat.toString()) }
     var longInput by remember{ mutableStateOf(long.toString()) }
@@ -142,51 +144,101 @@ fun CoordinatesCard (
                     }
                 }
             }
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ){
-                OutlinedTextField(
-                    value = latInput,
-                    singleLine = true,
-                    shape = shapes.large,
-                    onValueChange = {
-                        latInput = it
-                        onLatChange(it)
-                    },
-                    label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_latitude)) },
-                    modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = colorScheme.secondary,
-                        focusedLabelColor = colorScheme.secondary,
-                        unfocusedBorderColor = colorScheme.onSecondary,
-                        unfocusedLabelColor = colorScheme.onSecondary,
-                        unfocusedTextColor = colorScheme.onPrimary,
-                        cursorColor = colorScheme.onPrimary,
-                    ),
-                )
-                OutlinedTextField(
-                    value = longInput,
-                    singleLine = true,
-                    shape = shapes.large,
-                    onValueChange = {
-                        longInput = it
-                        onLogChange(it)
-                    },
-                    label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_longitude)) },
-                    modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = colorScheme.secondary,
-                        focusedLabelColor = colorScheme.secondary,
-                        unfocusedBorderColor = colorScheme.onSecondary,
-                        unfocusedLabelColor = colorScheme.onSecondary,
-                        unfocusedTextColor = colorScheme.onPrimary,
-                        cursorColor = colorScheme.onPrimary,
-                    ),
-                )
+            if(!landscape){
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ){
+                    OutlinedTextField(
+                        value = latInput,
+                        singleLine = true,
+                        shape = shapes.large,
+                        onValueChange = {
+                            latInput = it
+                            onLatChange(it)
+                        },
+                        label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_latitude)) },
+                        modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = colorScheme.secondary,
+                            focusedLabelColor = colorScheme.secondary,
+                            unfocusedBorderColor = colorScheme.onSecondary,
+                            unfocusedLabelColor = colorScheme.onSecondary,
+                            unfocusedTextColor = colorScheme.onPrimary,
+                            cursorColor = colorScheme.onPrimary,
+                        ),
+                    )
+                    OutlinedTextField(
+                        value = longInput,
+                        singleLine = true,
+                        shape = shapes.large,
+                        onValueChange = {
+                            longInput = it
+                            onLogChange(it)
+                        },
+                        label = { Text(stringResource(dam_A51706.coolweatherapptp3.R.string.enter_longitude)) },
+                        modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = colorScheme.secondary,
+                            focusedLabelColor = colorScheme.secondary,
+                            unfocusedBorderColor = colorScheme.onSecondary,
+                            unfocusedLabelColor = colorScheme.onSecondary,
+                            unfocusedTextColor = colorScheme.onPrimary,
+                            cursorColor = colorScheme.onPrimary,
+                        ),
+                    )
+                }
             }
+            else{
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ){
+                    OutlinedTextField(
+                        value = latInput,
+                        singleLine = true,
+                        shape = shapes.large,
+                        onValueChange = {
+                            latInput = it
+                            onLatChange(it)
+                        },
+                        label = { Text("Lat") },
+                        modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = colorScheme.secondary,
+                            focusedLabelColor = colorScheme.secondary,
+                            unfocusedBorderColor = colorScheme.onSecondary,
+                            unfocusedLabelColor = colorScheme.onSecondary,
+                            unfocusedTextColor = colorScheme.onPrimary,
+                            cursorColor = colorScheme.onPrimary,
+                        ),
+                    )
+                    OutlinedTextField(
+                        value = longInput,
+                        singleLine = true,
+                        shape = shapes.large,
+                        onValueChange = {
+                            longInput = it
+                            onLogChange(it)
+                        },
+                        label = { Text("Log") },
+                        modifier = Modifier.weight(1F).padding(horizontal = 5.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = colorScheme.secondary,
+                            focusedLabelColor = colorScheme.secondary,
+                            unfocusedBorderColor = colorScheme.onSecondary,
+                            unfocusedLabelColor = colorScheme.onSecondary,
+                            unfocusedTextColor = colorScheme.onPrimary,
+                            cursorColor = colorScheme.onPrimary,
+                        ),
+                    )
+                }
+            }
+
             if(!addFavourite){
                 FavouritesList(
                     favourites = viewModel.favourites,
@@ -197,7 +249,7 @@ fun CoordinatesCard (
                 )
             }
             else{
-                FavouritesSave(latInput.toFloat(), longInput.toFloat(), viewModel)
+                FavouritesSave(latInput.toFloat(), longInput.toFloat(), viewModel, landscape)
             }
         }
     }

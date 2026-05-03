@@ -214,7 +214,7 @@ fun PortraitWeatherUI (
                 painter = painterResource(id = wIcon), contentDescription = stringResource(R.string.weather_image),
                 modifier = Modifier.size(125.dp)
             )
-            CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, viewModel = viewModel)
+            CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, viewModel = viewModel, landscape = false)
             WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time)
             Button(
                 onClick = onUpdateButtonClick,
@@ -288,8 +288,8 @@ fun LandscapeWeatherUI (
                         )
                     }
                 }
-                CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.6F).wrapContentHeight().padding(12.dp), viewModel)
-                WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time, Modifier.weight(1F).wrapContentHeight().padding(12.dp))
+                CoordinatesCard(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.8F).wrapContentHeight().padding(8.dp), viewModel, landscape = true)
+                WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time, Modifier.weight(1F).wrapContentHeight().padding(8.dp))
             }
         }
     }
@@ -395,8 +395,8 @@ fun LandscapeWeatherUIPreview (
                         )
                     }
                 }
-                CoordinatesCardPreview(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.6F).wrapContentHeight().padding(12.dp))
-                WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time, Modifier.weight(1F).wrapContentHeight().padding(12.dp))
+                CoordinatesCardPreview(latitude, longitude, onLatitudeChange, onLongitudeChange, Modifier.weight(0.8F).wrapContentHeight().padding(8.dp))
+                WeatherCard(seaLevelPressure, windDirection, windSpeed, temperature, time, Modifier.weight(1F).wrapContentHeight().padding(8.dp))
             }
         }
     }

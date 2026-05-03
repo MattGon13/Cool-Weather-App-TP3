@@ -13,6 +13,7 @@ import dam_A51706.coolweatherapptp3.ui.theme.WeatherAppTheme
 import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Button
@@ -25,10 +26,13 @@ import androidx.compose.ui.unit.dp
 import io.ktor.websocket.Frame.Text
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
@@ -79,7 +83,8 @@ fun FavouritesList(
 fun FavouritesSave(
     latitude: Float,
     longitude: Float,
-    viewModel: WeatherViewModel
+    viewModel: WeatherViewModel,
+    lanscape: Boolean
 ){
     var locationName by remember { mutableStateOf("") }
 
@@ -109,27 +114,47 @@ fun FavouritesSave(
                 cursorColor = colorScheme.onPrimary,
             ),
         )
-        Button(
-            onClick = {
+        if(!lanscape){
+            Button(
+                onClick = {
+                    if(locationName.isNotBlank()){
+                        val newFavourite = Favourite(locationName, latitude, longitude)
+                        viewModel.addFavourite(newFavourite)
+                        locationName = ""
+                    }
+                },
+                modifier = Modifier.padding(horizontal = 5.dp).weight(0.6F),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp)
+            ){
+                Text(
+                    text = stringResource(R.string.add),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 11.sp
+                )
+            }
+        }
+        else{
+            IconButton(onClick = {
                 if(locationName.isNotBlank()){
                     val newFavourite = Favourite(locationName, latitude, longitude)
                     viewModel.addFavourite(newFavourite)
                     locationName = ""
                 }
             },
-            modifier = Modifier.padding(horizontal = 5.dp).weight(0.6F),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.onSecondary
-            ),
-            elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp)
-        ){
-            Text(
-                text = stringResource(R.string.add),
-                fontWeight = FontWeight.Bold,
-                fontSize = 11.sp
-            )
+                modifier = Modifier.padding(horizontal = 5.dp).weight(0.6F),
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
         }
+
     }
 }
 
